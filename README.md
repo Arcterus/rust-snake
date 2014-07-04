@@ -9,7 +9,7 @@ Build Instructions
 ------------------
 
 ```
-make
+cargo build
 ```
 
 Game Instructions
@@ -18,8 +18,8 @@ Game Instructions
 ![screenshot](https://raw.githubusercontent.com/arcterus/rust-snake/master/rust-snake.png)
 
 You may change the direction of the snake with the arrow keys.  To pause the
-game, hit either the ```return``` key or the ```p``` key.  If you'd like to
-restart the game, press ```r```.  The goal is to touch each randomly appearing
+game, hit either the `return` key or the `p` key.  If you'd like to
+restart the game, press `r`.  The goal is to touch each randomly appearing
 block with the "head" of the snake.  The game ends when the "head" touches
 another part of the snake.
 
@@ -33,10 +33,11 @@ Credits
 -------
 
 * Arcterus (this entire project)
+* Indiv0 (updates and Cargo support)
 
 License
 -------
 
-Copyright (C) 2014 by Arcterus.  
-This project is licensed under the MPL v2.0.  See ```LICENSE``` for more
+Copyright (C) 2014 by Arcterus.
+This project is licensed under the MPL v2.0.  See `LICENSE` for more
 details.
