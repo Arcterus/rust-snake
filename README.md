@@ -15,6 +15,8 @@ make
 Game Instructions
 -----------------
 
+![screenshot](https://raw.githubusercontent.com/arcterus/rust-snake/master/rust-snake.png)
+
 You may change the direction of the snake with the arrow keys.  To pause the
 game, hit either the ```return``` key or the ```p``` key.  If you'd like to
 restart the game, press ```r```.  The goal is to touch each randomly appearing
