@@ -9,6 +9,7 @@ extern crate sdl2_game_window;
 extern crate opengl_graphics;
 
 use std::rand::random;
+use std::cmp::max;
 use graphics::*;
 use opengl_graphics::Gl;
 use piston::*;
@@ -49,7 +50,9 @@ pub struct App {
 	grid: Grid,
 	started: bool,
 	game_over: bool,
-	direction: Direction
+	direction: Direction,
+	updates_since_moved: int, // # of updates since we last moved
+	move_threshold: int // # of updates it takes to move
 }
 
 impl Grid {
@@ -223,7 +226,9 @@ impl App {
 			grid: Grid::new(),
 			started: true,
 			game_over: false,
-			direction: Up
+			direction: Up,
+			updates_since_moved: 0,
+			move_threshold: 40
 		}
 	}
 }
@@ -265,10 +270,17 @@ impl Game for App {
 				let block = self.grid.new_block;
 				self.grid.add_to_snake(block);
 				self.grid.add_block();
+				// speed up
+				self.move_threshold = max(self.move_threshold - 1, 1);
 			} else if self.grid.contains(&near_head) {
 				self.game_over = true;
 			} else {
-				self.grid.move_snake(self.direction);
+				self.updates_since_moved += 1;
+
+				if self.updates_since_moved > self.move_threshold {
+					self.updates_since_moved -= self.move_threshold;
+					self.grid.move_snake(self.direction);
+				}
 			}
 		}
 	}
@@ -299,7 +311,7 @@ fn main() {
 	);
 	let mut app = App::new();
 	let game_iter_settings = GameIteratorSettings {
-		updates_per_second: 30,
+		updates_per_second: 1200,
 		max_frames_per_second: 30
 	};
 	app.run(&mut window, &game_iter_settings);
