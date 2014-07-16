@@ -11,7 +11,7 @@ extern crate opengl_graphics;
 use std::rand::random;
 use graphics::*;
 use opengl_graphics::Gl;
-use piston::{Game, GameIteratorSettings, GameWindowSettings, KeyReleaseArgs, RenderArgs};
+use piston::*;
 use sdl2_game_window::GameWindowSDL2;
 
 pub static WINDOW_HEIGHT: uint = 480;
@@ -226,20 +226,6 @@ impl App {
 			direction: Up
 		}
 	}
-
-	#[inline]
-	fn render_logic(&mut self) {
-		let near_head = self.grid.head().in_direction(&self.grid, self.direction);
-		if near_head == self.grid.new_block {
-			let block = self.grid.new_block;
-			self.grid.add_to_snake(block);
-			self.grid.add_block();
-		} else if self.grid.contains(&near_head) {
-			self.game_over = true;
-		} else {
-			self.grid.move_snake(self.direction);
-		}
-	}
 }
 
 impl Game for App {
@@ -272,16 +258,29 @@ impl Game for App {
 		debug!("released key: {}", args.key);
 	}
 
+	fn update(&mut self, _: &UpdateArgs) {
+		if ! self.game_over {
+			let near_head = self.grid.head().in_direction(&self.grid, self.direction);
+			if near_head == self.grid.new_block {
+				let block = self.grid.new_block;
+				self.grid.add_to_snake(block);
+				self.grid.add_block();
+			} else if self.grid.contains(&near_head) {
+				self.game_over = true;
+			} else {
+				self.grid.move_snake(self.direction);
+			}
+		}
+	}
+
 	fn render(&mut self, args: &RenderArgs) {
+		if self.game_over {
+			// TODO: display game over on screen
+		}
+
 		(&mut self.gl).viewport(0, 0, args.width as i32, args.height as i32);
 		let ref c = Context::abs(args.width as f64, args.height as f64);
 		c.rgb(1.0, 1.0, 1.0).draw(&mut self.gl);
-
-		if self.game_over {
-			// TODO: display game over on screen
-		} else if self.started {
-			self.render_logic();
-		}
 
 		self.grid.render(&mut self.gl, c);
 	}
@@ -300,7 +299,7 @@ fn main() {
 	);
 	let mut app = App::new();
 	let game_iter_settings = GameIteratorSettings {
-		updates_per_second: 120,
+		updates_per_second: 30,
 		max_frames_per_second: 30
 	};
 	app.run(&mut window, &game_iter_settings);
