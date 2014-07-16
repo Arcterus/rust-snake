@@ -229,7 +229,7 @@ impl App {
 }
 
 impl Game for App {
-	fn key_release(&mut self, args: &KeyReleaseArgs) {
+	fn key_press(&mut self, args: &KeyPressArgs) {
 		match args.key {
 			piston::keyboard::R => {
 				self.grid = Grid::new();
