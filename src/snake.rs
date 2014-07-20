@@ -84,7 +84,7 @@ impl Grid {
 		if self.valid(block.loc.x, block.loc.y) {
 			let mut i = 0;
 			while i < self.snake.len() {
-				if self.snake.get(i) == block {
+				if &self.snake[i] == block {
 					self.snake.remove(i);
 					break;
 				}
@@ -132,7 +132,7 @@ impl Grid {
 
 	pub fn contains(&self, block: &Block) -> bool {
 		if self.valid(block.loc.x, block.loc.y) {
-			self.grid.get(block.loc.y).get(block.loc.x).is_some()
+			self.grid[block.loc.y][block.loc.x].is_some()
 		} else {
 			false
 		}
@@ -145,7 +145,7 @@ impl Grid {
 
 	#[inline]
 	pub fn valid_x(&self, x: uint) -> bool {
-		x < self.grid.get(0).len()
+		x < self.grid[0].len()
 	}
 
 	#[inline]
@@ -187,10 +187,10 @@ impl Block {
 				} else {
 					Location::new(x, gridv.len() - 1)
 				}
-			} else if x == gridv.get(0).len() {
+			} else if x == gridv[0].len() {
 				Location::new(0, y)
 			} else {
-				Location::new(gridv.get(0).len() - 1, y)
+				Location::new(gridv[0].len() - 1, y)
 			}
 		)
 	}
