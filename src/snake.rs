@@ -2,6 +2,7 @@
 
 extern crate collections;
 #[phase(plugin, link)] extern crate log;
+extern crate getopts;
 extern crate graphics;
 extern crate piston;
 
@@ -10,15 +11,24 @@ extern crate opengl_graphics;
 
 use std::rand::random;
 use std::cmp::max;
+use std::os;
 use graphics::*;
 use opengl_graphics::Gl;
-use piston::*;
+use piston::{Game, GameIteratorSettings, GameWindowSettings, KeyPressArgs, RenderArgs, UpdateArgs};
 use sdl2_game_window::GameWindowSDL2;
 
 pub static WINDOW_HEIGHT: uint = 480;
 pub static WINDOW_WIDTH: uint = 640;
 
 pub static BLOCK_SIZE: uint = 10;  // NOTE: WINDOW_HEIGHT and WINDOW_WIDTH should be divisible by this
+
+#[static_assert]
+#[allow(dead_code)]
+static _window_width_divisible: bool = WINDOW_WIDTH % BLOCK_SIZE == 0;
+
+#[static_assert]
+#[allow(dead_code)]
+static _window_height_divisible: bool = WINDOW_HEIGHT % BLOCK_SIZE == 0;
 
 #[deriving(PartialEq)]
 pub enum Direction {
@@ -52,7 +62,8 @@ pub struct App {
 	game_over: bool,
 	direction: Direction,
 	updates_since_moved: int, // # of updates since we last moved
-	move_threshold: int // # of updates it takes to move
+	move_threshold: int, // # of updates it takes to move
+	variable_snake_speed: bool, // whether to speed up the snake as it grows.
 }
 
 impl Grid {
@@ -228,7 +239,8 @@ impl App {
 			game_over: false,
 			direction: Up,
 			updates_since_moved: 0,
-			move_threshold: 40
+			move_threshold: 40,
+			variable_snake_speed: false,
 		}
 	}
 }
@@ -264,14 +276,17 @@ impl Game for App {
 	}
 
 	fn update(&mut self, _: &UpdateArgs) {
-		if ! self.game_over {
+		if !self.game_over {
 			let near_head = self.grid.head().in_direction(&self.grid, self.direction);
 			if near_head == self.grid.new_block {
 				let block = self.grid.new_block;
 				self.grid.add_to_snake(block);
 				self.grid.add_block();
-				// speed up
-				self.move_threshold = max(self.move_threshold - 1, 1);
+
+				if self.variable_snake_speed {
+					// speed up
+					self.move_threshold = max(self.move_threshold - 1, 1);
+				}
 			} else if self.grid.contains(&near_head) {
 				self.game_over = true;
 			} else {
@@ -299,8 +314,6 @@ impl Game for App {
 }
 
 fn main() {
-	assert!(WINDOW_WIDTH % BLOCK_SIZE == 0);
-	assert!(WINDOW_HEIGHT % BLOCK_SIZE == 0);
 	let mut window = GameWindowSDL2::new(
 		GameWindowSettings {
 			title: "Snake".to_string(),
@@ -309,7 +322,23 @@ fn main() {
 			exit_on_esc: true
 		}
 	);
-	let mut app = App::new();
+
+	let mut app = App::new(); // needs to happen after `window` is created.
+
+	let variable_snake_speed = "variable-snake-speed";
+	let args = os::args();
+	let opts = [
+		getopts::optflag("", variable_snake_speed, "the snake will speed up as it grows")
+	];
+	match getopts::getopts(args.as_slice(), opts) {
+		Ok(m) => {
+			if m.opt_present(variable_snake_speed) {
+				app.variable_snake_speed = true;
+			}
+		},
+		Err(f) => { fail!(f.to_string()); },
+	};
+
 	let game_iter_settings = GameIteratorSettings {
 		updates_per_second: 1200,
 		max_frames_per_second: 30
