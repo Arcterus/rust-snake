@@ -15,15 +15,15 @@ path = "./src/snake.rs"
 
 git = "https://github.com/PistonDevelopers/piston"
 
-[dependencies.graphics]
+[dependencies.piston2d-graphics]
 
-git = "https://github.com/PistonDevelopers/rust-graphics"
+git = "https://github.com/PistonDevelopers/graphics"
 
-[dependencies.sdl2_game_window]
+[dependencies.pistoncore-sdl2_window]
 
 git = "https://github.com/PistonDevelopers/sdl2_game_window"
 
-[dependencies.opengl_graphics]
+[dependencies.piston2d-opengl_graphics]
 
 git = "https://github.com/PistonDevelopers/opengl_graphics"
 
