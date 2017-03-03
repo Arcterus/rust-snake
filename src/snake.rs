@@ -1,18 +1,18 @@
-#![feature(globs, phase)]
+#![feature(globs)]
 
 extern crate collections;
-#[phase(plugin, link)] extern crate log;
+#[macro_use] extern crate log;
 extern crate graphics;
 extern crate piston;
 
-extern crate sdl2_game_window;
+extern crate sdl2_window;
 extern crate opengl_graphics;
 
 use std::rand::random;
 use graphics::*;
 use opengl_graphics::Gl;
 use piston::{Game, GameIteratorSettings, GameWindowSettings, KeyReleaseArgs, RenderArgs};
-use sdl2_game_window::GameWindowSDL2;
+use sdl2_window::GameWindowSDL2;
 
 pub static WINDOW_HEIGHT: uint = 480;
 pub static WINDOW_WIDTH: uint = 640;
