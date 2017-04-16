@@ -3,8 +3,8 @@
 name = "snake"
 version = "0.0.0"
 authors = [
-    "Arcterus <arcterus@mail.com>",
-    "indiv0 <contact@nikitapek.in>"]
+"Arcterus <arcterus@mail.com>",
+"indiv0 <contact@nikitapek.in>"]
 
 [[bin]]
 
@@ -19,11 +19,10 @@ git = "https://github.com/PistonDevelopers/piston"
 
 git = "https://github.com/PistonDevelopers/rust-graphics"
 
-[dependencies.sdl2_game_window]
+[dependencies.sdl2_window]
 
 git = "https://github.com/PistonDevelopers/sdl2_game_window"
 
-[dependencies.opengl_graphics]
+[dependencies.piston2d-opengl_graphics]
 
 git = "https://github.com/PistonDevelopers/opengl_graphics"
-
