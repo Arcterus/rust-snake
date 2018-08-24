@@ -3,6 +3,8 @@ rust:
     - stable
     - beta
     - nightly
+before_install:
+    - sudo apt-get install -y libegl1-mesa-dev libgles2-mesa-dev libsdl2-dev
 matrix:
     allow_failures:
         - rust: nightly
