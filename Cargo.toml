@@ -1,29 +1,19 @@
 [package]
-
 name = "snake"
-version = "0.0.0"
+version = "1.0.0"
 authors = [
     "Arcterus <arcterus@mail.com>",
-    "indiv0 <contact@nikitapek.in>"]
+    "indiv0 <contact@nikitapek.in>",
+    "Nathan Scowcroft <ns@endrake.com>"]
 
 [[bin]]
-
 name = "snake"
 path = "./src/snake.rs"
 
-[dependencies.piston]
-
-git = "https://github.com/PistonDevelopers/piston"
-
-[dependencies.graphics]
-
-git = "https://github.com/PistonDevelopers/rust-graphics"
-
-[dependencies.sdl2_game_window]
-
-git = "https://github.com/PistonDevelopers/sdl2_game_window"
-
-[dependencies.opengl_graphics]
-
-git = "https://github.com/PistonDevelopers/opengl_graphics"
-
+[dependencies]
+piston = "0.37.0"
+piston2d-opengl_graphics = "0.53.0"
+piston2d-graphics = "0.26.0"
+piston_window = "0.80.0"
+pistoncore-sdl2_window = "0.50.0"
+rand = "0.5.5"
