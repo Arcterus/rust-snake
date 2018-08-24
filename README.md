@@ -34,6 +34,7 @@ Credits
 
 * Arcterus (this entire project)
 * Indiv0 (updates and Cargo support)
+* Nathan Scowcroft (updates and Game Over message)
 
 License
 -------
