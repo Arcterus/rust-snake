@@ -305,10 +305,10 @@ impl App {
                 self.elapsed = std::f64::MAX;
             }
             Key::P | Key::Return => self.started = !self.started,
-            Key::Up => self.want_direction = Some(Direction::Up),
-            Key::Down => self.want_direction = Some(Direction::Down),
-            Key::Left => self.want_direction = Some(Direction::Left),
-            Key::Right => self.want_direction = Some(Direction::Right),
+            Key::Up | Key::W => self.want_direction = Some(Direction::Up),
+            Key::Down | Key::S => self.want_direction = Some(Direction::Down),
+            Key::Left | Key::A => self.want_direction = Some(Direction::Left),
+            Key::Right | Key::D => self.want_direction = Some(Direction::Right),
             _ => {}
         }
     }
